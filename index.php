@@ -102,7 +102,7 @@ $num_count = count($categories);
                 <!--заполните этот список из массива категорий-->
                 <?php while ($index < $num_count): ?>
                     <li class="promo__item promo__item--boards">
-                        <a class="promo__link" href="pages/all-lots.html"><? print($categories[$index]); ?></a>
+                        <a class="promo__link" href="pages/all-lots.html"><?= $categories[$index]; ?></a>
                     </li>
                     <?php $index = $index + 1; ?>
                 <?php endwhile; ?>
@@ -145,7 +145,7 @@ $num_count = count($categories);
             <!--заполните этот список из массива категорий-->
             <?php while ($index_f < $num_count): ?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?= print($categories[$index_f]); ?></a>
+                    <a href="pages/all-lots.html"><?= $categories[$index_f]; ?></a>
                 </li>
                 <?php $index_f = $index_f + 1; ?>
             <?php endwhile; ?>
