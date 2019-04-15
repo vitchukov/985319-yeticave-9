@@ -44,8 +44,20 @@ $lots = [
     ]
 ];
 $index = 0;
-$index_f=0;
+$index_f = 0;
 $num_count = count($categories);
+
+function f_price($price)
+{
+    $price = ceil($price);
+    if ($price > 1000) {
+        $price = number_format($price, 0, '', ' ');
+    }
+    $price .= " ₽";
+
+    return $price;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -115,24 +127,25 @@ $num_count = count($categories);
             <ul class="lots__list">
                 <!--заполните этот список из массива с товарами-->
                 <?php foreach ($lots as $key => $item): ?>
-                <li class="lots__item lot">
-                    <div class="lot__image">
-                        <img src="<?=$item['url'];?>" width="350" height="260" alt="">
-                    </div>
-                    <div class="lot__info">
-                        <span class="lot__category"><?=$item['cat'];?></span>
-                        <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?=$item['title'];?></a></h3>
-                        <div class="lot__state">
-                            <div class="lot__rate">
-                                <span class="lot__amount">Стартовая цена</span>
-                                <span class="lot__cost"><?=$item['price'];?><b class="rub">р</b></span>
-                            </div>
-                            <div class="lot__timer timer">
-                                12:23
+                    <li class="lots__item lot">
+                        <div class="lot__image">
+                            <img src="<?= $item['url']; ?>" width="350" height="260" alt="">
+                        </div>
+                        <div class="lot__info">
+                            <span class="lot__category"><?= $item['cat']; ?></span>
+                            <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?= $item['title']; ?></a>
+                            </h3>
+                            <div class="lot__state">
+                                <div class="lot__rate">
+                                    <span class="lot__amount">Стартовая цена</span>
+                                    <span class="lot__cost"><?= f_price($item['price']); ?></span>
+                                </div>
+                                <div class="lot__timer timer">
+                                    12:23
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
                 <?php endforeach; ?>
             </ul>
         </section>
