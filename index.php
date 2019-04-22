@@ -67,12 +67,26 @@ function esc($str)
     return $text;
 }
 
+//работа со временем
+
+$ts = time();
+
+$tnight = strtotime('tomorrow');
+
+$secs_to_midnight = $tnight - $ts;
+
+$hours = floor($secs_to_midnight / 3600);
+$minutes = floor(($secs_to_midnight % 3600) / 60);
+
+$tend = $hours . ':' . $minutes;
 
 $page_content = include_template('index.php', [
     'index' => $index,
     'categories' => $categories,
     'lots' => $lots,
-    'num_count' => $num_count
+    'num_count' => $num_count,
+    'tend' => $tend,
+    'hours' => $hours
 ]);
 
 $layout_content = include_template('layout.php', [
