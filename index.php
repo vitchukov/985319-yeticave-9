@@ -69,24 +69,35 @@ function esc($str)
 
 //работа со временем
 
-$ts = time();
+function end_time($s)
+{
+    $ts = time();
 
-$tnight = strtotime('tomorrow');
+    $tnight = strtotime('tomorrow');
 
-$secs_to_midnight = $tnight - $ts;
+    $secs_to_midnight = $tnight - $ts;
 
-$hours = floor($secs_to_midnight / 3600);
-$minutes = floor(($secs_to_midnight % 3600) / 60);
+    $hours = floor($secs_to_midnight / 3600);
+    $minutes = floor(($secs_to_midnight % 3600) / 60);
+    if ($minutes < 10){
+        $minutes='0' . $minutes;
+    }
 
-$tend = $hours . ':' . $minutes;
+    $tend = $hours . ':' . $minutes;
+    if($s){
+        return $secs_to_midnight;
+    }
+
+    return $tend;
+}
 
 $page_content = include_template('index.php', [
     'index' => $index,
     'categories' => $categories,
     'lots' => $lots,
     'num_count' => $num_count,
-    'tend' => $tend,
-    'hours' => $hours
+    'tend' => end_time(null),
+    'secs' => end_time('s')
 ]);
 
 $layout_content = include_template('layout.php', [

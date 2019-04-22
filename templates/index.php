@@ -32,7 +32,7 @@
                             <span class="lot__amount">Стартовая цена</span>
                             <span class="lot__cost"><?= f_price($item['price']); ?></span>
                         </div>
-                        <div class="lot__timer timer<?php if ($hours == 0) echo ' timer--finishing'; ?>">
+                        <div class="lot__timer timer<?php if ($secs <= 3600) echo ' timer--finishing'; ?>">
                             <?= $tend; ?>
                         </div>
                     </div>
