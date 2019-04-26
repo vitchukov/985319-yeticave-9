@@ -6,7 +6,8 @@ use yeticave;
 CREATE TABLE categories
 (
   id   INT AUTO_INCREMENT PRIMARY KEY,
-  name char(128) not null unique
+  name char(128) not null unique,
+  code char(128) not null unique
 );
 
 use yeticave;
@@ -21,7 +22,8 @@ CREATE TABLE lots
   dt_end      DATETIME,
   step        int,
   user_id     int,
-  user_win_id int
+  user_win_id int,
+  cat_id      int
 );
 
 use yeticave;
