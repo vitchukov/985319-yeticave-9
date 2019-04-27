@@ -25,7 +25,7 @@
                 </div>
                 <div class="lot__info">
                     <span class="lot__category"><?= esc($item['name']); ?></span>
-                    <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?= esc($item['l.name']); ?></a>
+                    <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?= esc($item['name_l']); ?></a>
                     </h3>
                     <div class="lot__state">
                         <div class="lot__rate">

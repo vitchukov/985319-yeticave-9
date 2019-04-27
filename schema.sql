@@ -15,7 +15,7 @@ CREATE TABLE lots
 (
   id          INT AUTO_INCREMENT PRIMARY KEY,
   dt_cr       timestamp default current_timestamp,
-  name        char(128) not null,
+  name_l        char(128) not null,
   descr       char(128),
   url         char(128),
   price       int,

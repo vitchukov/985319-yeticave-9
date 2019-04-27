@@ -13,7 +13,7 @@ $sql = 'SELECT id, name, code FROM categories';
 $result = mysqli_query($con, $sql);
 $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-$sql = 'select l.name, price, url, c.name from lots l
+$sql = 'select l.name_l, price, url, c.name from lots l
 inner join categories c on l.cat_id=c.id';
 $result = mysqli_query($con, $sql);
 $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
