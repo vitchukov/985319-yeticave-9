@@ -13,7 +13,7 @@ insert into lots
 (dt_cr, name, descr, url, price, dt_end, step, user_id, user_win_id, cat_id)
 values (20190426120000, '2014 Rossignol District Snowboard', 'Описание', 'img/lot-1.jpg', 10999, 20190626120000, 100, 1,
         2, 1),
-       (20190426120000, 'DC Ply Mens 2016/2017 Snowboard', 'Описание', 'img/lot-2.jpg', 159999, 20190626120000, 100, 1,
+       (20190426120000, 'DC Ply Mens 2016/2017 Snowboard', 'Описание', 'img/lot-2.jpg', 15999, 20190626120000, 100, 1,
         2, 1),
        (20190426120000, 'Крепления Union Contact Pro 2015 года размер L/XL', 'Описание', 'img/lot-3.jpg', 8000,
         20190626120000,
