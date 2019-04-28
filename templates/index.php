@@ -30,7 +30,7 @@
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?= f_price($item['price']); ?></span>
+                            <span class="lot__cost"><?php  if ($item['MAX(r.sum)'] !== null) echo f_price($item['MAX(r.sum)']); else echo f_price($item['price']); ?></span>
                         </div>
                         <div class="lot__timer timer<?php if ($secs <= 3600) echo ' timer--finishing'; ?>">
                             <?= $tend; ?>

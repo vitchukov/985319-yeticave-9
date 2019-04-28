@@ -13,8 +13,10 @@ $sql = 'SELECT id, name, code FROM categories';
 $result = mysqli_query($con, $sql);
 $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-$sql = 'select l.name_l, price, url, c.name from lots l
-inner join categories c on l.cat_id=c.id';
+$sql = 'select l.name_l, l.price, l.url, MAX(r.sum), c.name from lots l
+inner join categories c on l.cat_id=c.id
+inner join rates r on r.lot_id=l.id
+GROUP BY r.lot_id order by l.dt_cr limit 6';
 $result = mysqli_query($con, $sql);
 $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
