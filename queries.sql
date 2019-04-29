@@ -13,7 +13,7 @@ insert into lots
 (dt_cr, name, descr, url, price, dt_end, step, user_id, user_win_id, cat_id)
 values (20190426120000, '2014 Rossignol District Snowboard', 'Описание', 'img/lot-1.jpg', 10999, 20190626120000, 100, 1,
         2, 1),
-       (20190426120000, 'DC Ply Mens 2016/2017 Snowboard', 'Описание', 'img/lot-2.jpg', 159999, 20190626120000, 100, 1,
+       (20190426120000, 'DC Ply Mens 2016/2017 Snowboard', 'Описание', 'img/lot-2.jpg', 15999, 20190626120000, 100, 1,
         2, 1),
        (20190426120000, 'Крепления Union Contact Pro 2015 года размер L/XL', 'Описание', 'img/lot-3.jpg', 8000,
         20190626120000,
@@ -46,7 +46,7 @@ inner join rates r on r.lot_id=l.id
 GROUP BY r.lot_id order by l.dt_cr;
 
 # показать лот по его id. Получите также название категории, к которой принадлежит лот
-select l.name, c.name from lots l
+select l.name_l, c.name from lots l
 join categories c on l.cat_id=c.id
 where l.id=2;
 
@@ -54,6 +54,6 @@ where l.id=2;
 update lots set name='Крепления Union Contact Pro 2015 года размер L/XL' where id=3;
 
 # получить список самых свежих ставок для лота по его идентификатору
-select r.sum, l.name from rates r
+select r.sum, l.name_l from rates r
 join lots l on r.lot_id=l.id
 where l.id=3 order by r.dt_rate;

@@ -4,12 +4,12 @@
         горнолыжное снаряжение.</p>
     <ul class="promo__list">
         <!--заполните этот список из массива категорий-->
-        <?php while ($index < $num_count): ?>
-            <li class="promo__item promo__item--boards">
-                <a class="promo__link" href="pages/all-lots.html"><?= esc($categories[$index]); ?></a>
+        <?php foreach ($categories as $cat): ?>
+            <li class="promo__item promo__item--<?=$cat['code'];?>">
+                <a class="promo__link" href="pages/all-lots.html"><?= esc($cat['name']); ?></a>
             </li>
-            <?php $index = $index + 1; ?>
-        <?php endwhile; ?>
+
+        <?php endforeach; ?>
     </ul>
 </section>
 <section class="lots">
@@ -24,13 +24,13 @@
                     <img src="<?= $item['url']; ?>" width="350" height="260" alt="">
                 </div>
                 <div class="lot__info">
-                    <span class="lot__category"><?= esc($item['cat']); ?></span>
-                    <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?= esc($item['title']); ?></a>
+                    <span class="lot__category"><?= esc($item['name']); ?></span>
+                    <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?= esc($item['name_l']); ?></a>
                     </h3>
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?= f_price($item['price']); ?></span>
+                            <span class="lot__cost"><?php  if ($item['MAX(r.sum)'] !== null) echo f_price($item['MAX(r.sum)']); else echo f_price($item['price']); ?></span>
                         </div>
                         <div class="lot__timer timer<?php if ($secs <= 3600) echo ' timer--finishing'; ?>">
                             <?= $tend; ?>
