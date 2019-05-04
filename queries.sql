@@ -41,9 +41,9 @@ select id, name, code from categories;
 
 # получить самые новые, открытые лоты. Каждый лот должен включать название, стартовую цену, ссылку на изображение, цену, название категории;
 select l.name, l.price, l.url, MAX(r.sum), c.name from lots l
-inner join categories c on l.cat_id=c.id
-inner join rates r on r.lot_id=l.id
-GROUP BY r.lot_id order by l.dt_cr;
+join categories c on l.cat_id=c.id
+left join rates r on r.lot_id=l.id
+GROUP BY l.id order by l.dt_cr;
 
 # показать лот по его id. Получите также название категории, к которой принадлежит лот
 select l.name_l, c.name from lots l
