@@ -12,27 +12,27 @@ $sql = 'SELECT id, name, code FROM categories';
 $result = mysqli_query($con, $sql);
 $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-}
+if (isset($_GET['id']) && $_GET['id']) {
+    $id = (int) $_GET['id'];
+    }
 
 if (!$con) {
     $error = mysqli_connect_error();
-    $content = include_template('error.php', ['error' => $error]);
+    $page_content = include_template('error.php', ['error' => $error]);
 }
 else {
 # показать лот по его id. Получите также название категории, к которой принадлежит лот
-$sql = 'select l.name name_l, l.id, url, descr, price, dt_end, MAX(r.sum), c.name name_c from lots l '
-    . 'join categories c on l.cat_id=c.id '
-    . 'left join rates r on r.lot_id=l.id '
-    . 'where l.id=' . $id . ' limit 1';
-$result = mysqli_query($con, $sql);
-    if ($result) {
-$lot = mysqli_fetch_assoc($result);
-    }
-    else {
-        $error = mysqli_error($con);
-        $content = include_template('error.php', ['error' => $error]);
+    $sql = 'select l.name name_l, l.id, url, descr, price, dt_end, MAX(r.sum), step, c.name name_c from lots l '
+        . 'join categories c on l.cat_id=c.id '
+        . 'left join rates r on r.lot_id=l.id '
+        . 'where l.id=' . $id . ' limit 1';
+    if ($result = mysqli_query($con, $sql)) {
+        if (!mysqli_num_rows($result)) {
+            http_response_code(404);
+            $page_content = include_template('error.php', ['error' => 'Лота с таким идентификатором не существует']);
+        } else {
+            $lot = mysqli_fetch_assoc($result);
+        }
     }
 }
 
