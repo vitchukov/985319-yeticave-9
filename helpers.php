@@ -1,4 +1,7 @@
 <?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 /**
  * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
  *
@@ -13,6 +16,8 @@
  *
  * @return bool true при совпадении с форматом 'ГГГГ-ММ-ДД', иначе false
  */
+
+
 function is_date_valid(string $date) : bool {
     $format_to_check = 'Y-m-d';
     $dateTimeObj = date_create_from_format($format_to_check, $date);
