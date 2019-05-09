@@ -26,33 +26,36 @@ $page_content = include_template('add.php', [
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lot = $_POST;
-    $errors = [];
+    $required = ['name', 'descr', 'price', 'dt_end', 'step', 'category'];
+   // $errors = [];
     if ($lot['category'] == 'Выберите категорию') {
         $errors['category'] = 'Выберите категорию';
     }
-    if (!is_int($lot['price'])) {
+    if (!is_int($lot['price']) && !($lot['price'] > 0)) {
         $errors['price'] = 'Введите начальную цену';
     }
-    if (!is_int($lot['step'])) {
+    if (!is_int($lot['step']) && !($lot['step'] > 0)) {
         $errors['step'] = 'Введите шаг ставки';
     }
     if (!is_date_valid($lot['dt_end'])) {
         $errors['dt_end'] = 'Введите дату завершения торгов ГГГГ-ММ-ДД';
     }
-    foreach ($lot as $field => $value) {
-        if (empty($lot[$field])) {
+    if (!is_date_not_end($lot['dt_end'])) {
+        $errors['dt_end'] = 'Дата должна быть более текущей минимум на сутки';
+    }
+    foreach ($required as $field) {
+        if (empty($_POST[$field])) {
             $errors[$field] = 'Заполните это поле';
         }
     }
     if (!empty($_FILES['url']['name'])) {
-        $tmp_name = $_FILES['url']['tmp_name'];
-        $path = $_FILES['url']['name'];
-        $f_type = mime_content_type($tmp_name);
-        if ($f_type !== "image/png" && $f_type !== "image/jpeg") {
+        $filename = uniqid();
+        $f_type = mime_content_type($_FILES['url']['tmp_name']);
+        if ($f_type !== "image/png" && $f_type !== "image/jpeg" && $f_type !== "image/jpg") {
             $errors['url'] = 'Загрузите изображение в формате PNG или JPG';
         } else {
-            move_uploaded_file($tmp_name, 'uploads/' . $path);
-            $lot['url'] = 'uploads/' . $path;
+            move_uploaded_file($_FILES['url']['tmp_name'], 'uploads/' . $filename);
+            $lot['url'] = 'uploads/' . $filename;
         }
     } else {
         $errors['url'] = 'Вы не загрузили файл изображения';
