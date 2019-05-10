@@ -46,13 +46,6 @@ function f_price($price)
     return $price;
 }
 
-function esc($str)
-{
-    $text = strip_tags($str);
-
-    return $text;
-}
-
 //работа со временем
 
 function end_time($dtend, $s)

@@ -13,13 +13,6 @@ $result = mysqli_query($con, $sql);
 $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 
-function esc($str)
-{
-    $text = strip_tags($str);
-
-    return $text;
-}
-
 $page_content = include_template('add.php', [
     'categories' => $categories,
   ]);
@@ -83,22 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'categories' => $categories,
     ]);
 }
-
-
-//    $sql = 'INSERT INTO lots (dt_cr, name, descr, url, price, dt_end, step, user_id, cat_id) VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)';
-//
-//    $stmt = db_get_prepare_stmt($con, $sql, [$lot['name'], $lot['descr'], $lot['url'], $lot['price'], $lot['dt_end'], $lot['step'], $lot['user_id'], $lot['cat_id']]);
-//    $res = mysqli_stmt_execute($stmt);
-//
-//    if ($res) {
-//        $lot_id = mysqli_insert_id($con);
-//
-//        header("Location: lot.php?id=" . $lot_id);
-//    }
-//    else {
-//        $page_content = include_template('error.php', ['error' => mysqli_error($con), 'categories' => $categories]);
-//    }
-//}
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,

@@ -26,6 +26,13 @@ function is_date_valid(string $date): bool
     return $dateTimeObj !== false && array_sum(date_get_last_errors()) === 0;
 }
 
+function esc($str)
+{
+    $text = strip_tags($str);
+
+    return $text;
+}
+
 function is_date_not_end($date)
 {
     $date_in_sec = strtotime($date);
