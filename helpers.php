@@ -42,6 +42,41 @@ function is_date_not_end($date)
     }
 }
 
+function f_price($price)
+{
+    $price = ceil($price);
+    if ($price > 1000) {
+        $price = number_format($price, 0, '', ' ');
+    }
+    $price .= " ₽";
+
+    return $price;
+}
+
+//работа со временем
+
+function end_time($dtend, $s)
+{
+    $ts = time();
+
+    $timeend = strtotime($dtend);
+
+    $secs_to_end = $timeend - $ts;
+
+    $hours = floor($secs_to_end / 3600);
+    $minutes = floor(($secs_to_end % 3600) / 60);
+    if ($minutes < 10) {
+        $minutes = '0' . $minutes;
+    }
+
+    $tend = $hours . ':' . $minutes;
+    if ($s) {
+        return $secs_to_end;
+    }
+
+    return $tend;
+}
+
 /**
  * Создает подготовленное выражение на основе готового SQL запроса и переданных данных
  *
