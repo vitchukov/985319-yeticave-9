@@ -1,10 +1,13 @@
 <?php
 require_once('helpers.php');
 
-$is_auth = rand(0, 1);
+session_start();
 
-$user_name = "Владимир"; // укажите здесь ваше имя
+$user = null;
 
+if ($_SESSION){
+    $user = $_SESSION['user'];
+}
 
 $con = mysqli_connect("localhost", "root", "", "yeticave");
 mysqli_set_charset($con, "utf8");
@@ -59,14 +62,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
-
-
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'categories' => $categories,
     'title' => ' Регистрация',
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
+    'user' => $user,
 ]);
 
 print($layout_content);
