@@ -69,6 +69,7 @@ if (isset($_SESSION['user'])) {
 
                 $lot_id = mysqli_insert_id($con);
                 header("Location: lot.php?id=" . $lot_id);
+                exit();
             }
 
         }

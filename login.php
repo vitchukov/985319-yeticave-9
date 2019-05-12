@@ -15,7 +15,6 @@ $page_content = include_template('login.php', [
 ]);
 
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $form = $_POST;
 
@@ -33,31 +32,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $user = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
 
-    if (!count($errors) and $user) {
+    if (!count($errors) && $user) {
         if (password_verify($form['password'], $user['password'])) {
             $_SESSION['user'] = $user;
-        }
-        else {
+        } else {
             $errors['password'] = 'Неверный пароль';
         }
-    }
-    elseif (!$user and $form['email']) {
+    } elseif (!$user && $form['email']) {
         $errors['email'] = 'Такой пользователь не найден';
     }
 
     if (count($errors)) {
-        $page_content = include_template('login.php', ['form' => $form, 'errors' => $errors,'categories' => $categories]);
-    }
-    else {
+        $page_content = include_template('login.php', ['form' => $form, 'errors' => $errors, 'categories' => $categories]);
+    } else {
         header("Location: /");
         exit();
     }
-}
-else {
+} else {
     if (isset($_SESSION['user'])) {
         header("Location: /");
-    }
-    else {
+        exit();
+    } else {
         $page_content = include_template('login.php', ['categories' => $categories]);
     }
 }
