@@ -32,8 +32,8 @@
                             <span class="lot__amount">Стартовая цена</span>
                             <span class="lot__cost"><?php  if ($item['MAX(r.sum)'] !== null) echo f_price($item['MAX(r.sum)']); else echo f_price($item['price']); ?></span>
                         </div>
-                        <div class="lot__timer timer<?php if ($secs <= 3600) echo ' timer--finishing'; ?>">
-                            <?= $tend; ?>
+                        <div class="lot__timer timer<?php if (end_time($item['dt_end'],'s') <= 3600) echo ' timer--finishing'; ?>">
+                            <?= end_time($item['dt_end'],null); ?>
                         </div>
                     </div>
                 </div>
