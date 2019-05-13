@@ -33,12 +33,13 @@
                             <span><?php if ($lot['MAX(r.sum)'] !== null) echo f_price($lot['MAX(r.sum)'] + $lot['step']); else echo f_price($lot['price'] + $lot['step']); ?></span>
                         </div>
                     </div>
-                    <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post" autocomplete="off">
-                        <p class="lot-item__form-item form__item form__item--invalid">
+                    <form class="lot-item__form" action="" method="post" autocomplete="off">
+                        <p class="lot-item__form-item form__item <?= isset($errors['rate']) ? "form__item--invalid" : "" ?>">
                             <label for="cost">Ваша ставка</label>
-                            <input id="cost" type="text" name="cost"
-                                   placeholder="<?php if ($lot['MAX(r.sum)'] !== null) echo $lot['MAX(r.sum)'] + $lot['step']; else echo $lot['price'] + $lot['step']; ?>">
-                            <span class="form__error">Введите наименование лота</span>
+                            <input id="cost" type="text" name="rate"
+                                   placeholder="<?php if ($lot['MAX(r.sum)'] !== null) echo $lot['MAX(r.sum)'] + $lot['step']; else echo $lot['price'] + $lot['step']; ?>"
+                                   value="<?php if ($lot['MAX(r.sum)'] !== null) echo ($lot['MAX(r.sum)'] + $lot['step']); else echo ($lot['price'] + $lot['step']); ?>">
+                            <span class="form__error"><?php if (isset($errors['rate'])) echo $errors['rate'] ?></span>
                         </p>
                         <button type="submit" class="button">Сделать ставку</button>
                     </form>
