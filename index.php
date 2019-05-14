@@ -18,6 +18,7 @@ $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 $sql = 'select l.name name_l,l.id id_l, l.price, l.url, MAX(r.sum), c.name, dt_end from lots l '
 . 'join categories c on l.cat_id=c.id '
 . 'left join rates r on r.lot_id=l.id '
+. 'where dt_end > now() '
 . 'GROUP BY l.id order by l.dt_cr limit 6';
 $result = mysqli_query($con, $sql);
 $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);

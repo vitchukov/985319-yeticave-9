@@ -5,7 +5,7 @@
     <ul class="promo__list">
         <!--заполните этот список из массива категорий-->
         <?php foreach ($categories as $cat): ?>
-            <li class="promo__item promo__item--<?=$cat['code'];?>">
+            <li class="promo__item promo__item--<?= $cat['code']; ?>">
                 <a class="promo__link" href="pages/all-lots.html"><?= esc($cat['name']); ?></a>
             </li>
 
@@ -25,15 +25,18 @@
                 </div>
                 <div class="lot__info">
                     <span class="lot__category"><?= esc($item['name']); ?></span>
-                    <h3 class="lot__title"><a class="text-link" href="/lot.php?id=<?=$item['id_l'];?>"><?= esc($item['name_l']); ?></a>
+                    <h3 class="lot__title"><a class="text-link"
+                                              href="/lot.php?id=<?= $item['id_l']; ?>"><?= esc($item['name_l']); ?></a>
                     </h3>
                     <div class="lot__state">
                         <div class="lot__rate">
-                            <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?php  if ($item['MAX(r.sum)'] !== null) echo f_price($item['MAX(r.sum)']); else echo f_price($item['price']); ?></span>
+                            <span class="lot__amount"><?php if ($item['MAX(r.sum)'] !== null) echo 'Текущая ставка'; else echo 'Стартовая цена'; ?></span>
+                            <span class="lot__cost"><?php if ($item['MAX(r.sum)'] !== null) echo f_price($item['MAX(r.sum)']); else echo f_price($item['price']); ?></span>
                         </div>
-                        <div class="lot__timer timer<?php if (end_time($item['dt_end'],'s') <= 3600) echo ' timer--finishing'; ?>">
-                            <?= end_time($item['dt_end'],null); ?>
+                        <div class="lot__timer timer<?php if ((end_time($item['dt_end'], 's') <= 3200) && ((end_time($item['dt_end'], 's') > 0))) echo ' timer--finishing';
+                        elseif (end_time($item['dt_end'], 's') <= 0) echo ' timer--end' ; ?>">
+                            <?php if (end_time($item['dt_end'], 's') > 0) echo (end_time($item['dt_end'], null));
+                            elseif (end_time($item['dt_end'], 's') <= 0) echo 'Торги завершены' ; ?>
                         </div>
                     </div>
                 </div>

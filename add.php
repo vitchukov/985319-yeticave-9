@@ -62,7 +62,7 @@ if (isset($_SESSION['user'])) {
             ]);
         } else {
             $sql = 'INSERT INTO lots (dt_cr, name, descr, url, price, dt_end, step, user_id, cat_id) VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)';
-            $lot['user_id'] = 1;
+            $lot['user_id'] = $user['id'];
             $stmt = db_get_prepare_stmt($con, $sql, [$lot['name'], $lot['descr'], $lot['url'], $lot['price'], $lot['dt_end'], $lot['step'], $lot['user_id'], $lot['category']]);
             $res = mysqli_stmt_execute($stmt);
             if ($res) {
