@@ -18,7 +18,7 @@
             <p class="lot-item__description"><?= esc($lot['descr']); ?></p>
         </div>
         <div class="lot-item__right">
-            <?php if (isset($_SESSION['user'])): ?>
+            <?php if (isset($_SESSION['user']) && (!($end_user['user_id'] == $user['id']))): ?>
                 <div class="lot-item__state">
                     <div class="lot-item__timer timer<?php if ($secs <= 3600) echo ' timer--finishing'; ?>">
                         <?= $tend; ?>

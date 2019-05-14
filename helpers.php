@@ -65,11 +65,14 @@ function end_time($dtend, $s)
 
     $hours = floor($secs_to_end / 3600);
     $minutes = floor(($secs_to_end % 3600) / 60);
+    $seconds = floor(($secs_to_end % 60) / 60);
     if ($minutes < 10) {
         $minutes = '0' . $minutes;
     }
-
-    $tend = $hours . ':' . $minutes;
+    if ($seconds < 10) {
+        $seconds = '0' . $seconds;
+    }
+    $tend = $hours . ':' . $minutes . ':' . $seconds ;
     if ($s) {
         return $secs_to_end;
     }
