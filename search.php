@@ -33,8 +33,10 @@ else {
 
         $cur_page = $_GET['page'] ?? 1;
         $page_items = 3;
-
-        $result = mysqli_query($con, 'SELECT COUNT(*) as cnt FROM lots ');
+        $sql ='SELECT COUNT(*) as cnt FROM lots where MATCH(name, descr) AGAINST(?)';
+        $stmt = db_get_prepare_stmt($con, $sql, [$search]);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
         $items_count = mysqli_fetch_assoc($result)['cnt'];
         $pages_count = ceil($items_count / $page_items);
         $offset = ($cur_page - 1) * $page_items;
