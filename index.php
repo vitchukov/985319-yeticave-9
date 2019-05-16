@@ -8,6 +8,7 @@ $user = null;
 if ($_SESSION){
     $user = $_SESSION['user'];
 }
+require_once('getwinner.php');
 
 $con = mysqli_connect("localhost", "root", "", "yeticave");
 mysqli_set_charset($con, "utf8");

@@ -4,6 +4,9 @@ require_once('helpers.php');
 session_start();
 
 $user = null;
+$pages = 1;
+$pages_count = 1;
+$cur_page = 1;
 
 if ($_SESSION){
     $user = $_SESSION['user'];
