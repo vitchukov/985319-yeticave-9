@@ -37,6 +37,7 @@
                 </li>
             <?php endforeach; ?>
     </section>
+    <?php if ($pages > 1): ?>
     <ul class="pagination-list">
         <li class="pagination-item pagination-item-prev"><a
                     href="/search.php?search=<?= $search; ?>&page=<?php if ($cur_page > 1) echo($cur_page - 1); else echo $cur_page; ?>">Назад</a>
@@ -50,4 +51,5 @@
                     href="/search.php?search=<?= $search; ?>&page=<?php if ($cur_page < $pages_count) echo($cur_page + 1); else echo $cur_page; ?>">Вперед</a>
         </li>
     </ul>
+    <? endif; ?>
 </div>
