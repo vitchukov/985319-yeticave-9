@@ -15,9 +15,6 @@ $rates = [];
 
 $con = mysqli_connect("localhost", "root", "", "yeticave");
 mysqli_set_charset($con, "utf8");
-$sql = 'SELECT id, name, code FROM categories';
-$result = mysqli_query($con, $sql);
-$categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 
 if (!$con) {
@@ -25,13 +22,17 @@ if (!$con) {
     $page_content = include_template('error.php', ['error' => $error, 'categories' => $categories]);
 } else
 
+    $sql = 'SELECT id, name, code FROM categories';
+$result = mysqli_query($con, $sql);
+$categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
 # показать все ставки пользователя по id. Получите также название категории, к которой принадлежит
 
-    $sql = 'select u.contacts, l.url, l.name name_l, l.dt_end, c.name name_c, r.sum, r.dt_rate dt_r, l.user_win_id from rates r '
- . ' left join lots l on r.lot_id = l.id '
- . ' join categories c on l.cat_id = c.id '
- . ' left join users u on l.user_win_id = u.id '
- . ' where r.user_id=' . $user['id'] . ' group by r.id order by r.dt_rate desc ';
+$sql = 'select u.contacts, l.id id_l, l.url, l.name name_l, l.dt_end, c.name name_c, r.sum, r.dt_rate dt_r, l.user_win_id from rates r '
+    . ' left join lots l on r.lot_id = l.id '
+    . ' join categories c on l.cat_id = c.id '
+    . ' left join users u on l.user_win_id = u.id '
+    . ' where r.user_id=' . $user['id'] . ' group by r.id order by r.dt_rate desc ';
 
 if ($result = mysqli_query($con, $sql)) {
     if (!mysqli_num_rows($result)) {
@@ -44,15 +45,11 @@ if ($result = mysqli_query($con, $sql)) {
     }
 }
 
-
-
 if ($rates) {
     $page_content = include_template('my-bets.php', [
         'categories' => $categories,
         'rates' => $rates,
         'user' => $user
-        //       'tend' => end_time($rates['dt_end'], null),
-  //      'secs' => end_time($rates['dt_end'], 's')
     ]);
 }
 

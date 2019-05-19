@@ -29,7 +29,7 @@ if (!$con) {
 
     mysqli_query($con, 'CREATE FULLTEXT INDEX lot_search ON lots(name, descr)');
 
-    $search = trim($_GET['search'] ?? '');
+    $search = esc(trim($_GET['search'] ?? ''));
 
     if (!empty($search)) {
 

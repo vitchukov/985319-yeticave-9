@@ -46,7 +46,7 @@
         </div>
     </header>
 
-    <main <?php if ($_SERVER['REQUEST_URI']=='/') echo ' class="container"'; ?>>
+    <main <?php if ($_SERVER['REQUEST_URI']=='/') { echo ' class="container"';} ?>>
         <?= $content; ?>
     </main>
 </div>
@@ -57,7 +57,7 @@
             <!--заполните этот список из массива категорий-->
             <?php foreach ($categories as $cat): ?>
                 <li class="nav__item">
-                    <a href="all-lots.php?cat=<?= $cat['id']; ?>&name=<?= $cat['name']; ?>"><?= esc($cat['name']); ?></a>
+                    <a href="all-lots.php?cat=<?= $cat['id']; ?>&name=<?= esc($cat['name']); ?>"><?= esc($cat['name']); ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>
