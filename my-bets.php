@@ -27,7 +27,7 @@ if (!$con) {
 
 # показать все ставки пользователя по id. Получите также название категории, к которой принадлежит
 
-    $sql = 'select u.contacts, l.url, l.name name_l, l.dt_end, c.name name_c, r.sum, DATE_FORMAT(r.dt_rate, "%d.%m.%y в %H:%i") dt_r, l.user_win_id from rates r '
+    $sql = 'select u.contacts, l.url, l.name name_l, l.dt_end, c.name name_c, r.sum, r.dt_rate dt_r, l.user_win_id from rates r '
  . ' left join lots l on r.lot_id = l.id '
  . ' join categories c on l.cat_id = c.id '
  . ' left join users u on l.user_win_id = u.id '

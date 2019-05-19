@@ -4,6 +4,7 @@ require_once('helpers.php');
 session_start();
 
 $user = null;
+$count_rates = 0;
 
 if ($_SESSION) {
     $user = $_SESSION['user'];
@@ -21,12 +22,27 @@ if (!$con) {
     $page_content = include_template('error.php', ['error' => $error, 'categories' => $categories]);
 } elseif (isset($_GET['id']) && $_GET['id']) {
     $id = (int)$_GET['id'];
+
     # ищем id пользователя сделавшего последнюю ставку
     $sql = 'SELECT user_id from rates where lot_id=' . $id . ' ORDER by dt_rate desc limit 1';
     $result = mysqli_query($con, $sql);
     $end_user = mysqli_fetch_assoc($result);
-# показать лот по его id. Получите также название категории, к которой принадлежит лот
-    $sql = 'select l.name name_l, l.id id_l, url, descr, price, dt_end, MAX(r.sum), step, c.name name_c from lots l '
+
+    # ищем последние ставки по лоту
+    $sql = 'SELECT u.name, sum, r.dt_rate FROM rates r'
+        . ' join users u on r.user_id=u.id'
+        . ' where lot_id=' . $id . ' order by r.dt_rate desc limit 10';
+
+    $result = mysqli_query($con, $sql);
+    $end_rates = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    # определяем количество ставок по лоту
+    $sql = 'SELECT count(*) as cnt FROM rates where lot_id=' . $id ;
+    $result = mysqli_query($con, $sql);
+    $count_rates = mysqli_fetch_assoc($result)['cnt'];
+
+    # показать лот по его id. Получите также название категории, к которой принадлежит лот
+    $sql = 'select l.name name_l, l.id id_l, l.user_id, url, descr, price, dt_end, MAX(r.sum), step, c.name name_c from lots l '
         . 'join categories c on l.cat_id=c.id '
         . 'left join rates r on r.lot_id=l.id '
         . 'where l.id=' . $id . ' GROUP BY l.id limit 1';
@@ -48,10 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors = [];
 
     if (!($end_user['user_id'] == $user['id'])) {
-
-
         if (!is_int($form['rate']) && !($form['rate'] > 0)) {
             $errors['rate'] = 'Введите вашу ставку';
+        }
+        if ($form['rate'] < ($lot['MAX(r.sum)'] + $lot['step'])) {
+            $errors['rate'] = 'Ставка должна быть больше предыдущей ставки на шаг торгов';
         }
         foreach ($required as $field) {
             if (empty($_POST[$field])) {
@@ -65,7 +82,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'lot' => $lot,
                 'form' => $form,
                 'tend' => end_time($lot['dt_end'], null),
-                'secs' => end_time($lot['dt_end'], 's')
+                'secs' => end_time($lot['dt_end'], 's'),
+                'end_user' => $end_user,
+                'end_rates' => $end_rates,
+                'count_rates' => $count_rates,
+                'user' => $user
             ]);
         } else {
             $sql = 'INSERT INTO rates (dt_rate, sum, user_id, lot_id) VALUES (NOW(), ?, ?, ?)';
@@ -85,8 +106,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'tend' => end_time($lot['dt_end'], null),
             'secs' => end_time($lot['dt_end'], 's'),
             'end_user' => $end_user,
+            'end_rates' => $end_rates,
+            'count_rates' => $count_rates,
             'user' => $user
-            ]);
+        ]);
 
     }
 } elseif ($lot) {
@@ -95,7 +118,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'lot' => $lot,
         'tend' => end_time($lot['dt_end'], null),
         'secs' => end_time($lot['dt_end'], 's'),
+        'end_rates' => $end_rates,
         'end_user' => $end_user,
+        'count_rates' => $count_rates,
         'user' => $user
     ]);
 

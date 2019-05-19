@@ -8,7 +8,7 @@ $pages = 1;
 $pages_count = 1;
 $cur_page = 1;
 
-if ($_SESSION) {
+if ($_SESSION){
     $user = $_SESSION['user'];
 }
 
@@ -17,7 +17,8 @@ $con = mysqli_connect("localhost", "root", "", "yeticave");
 if (!$con) {
     mysqli_set_charset($con, "utf8");
     $error = mysqli_connect_error();
-} else {
+}
+else {
     $sql = 'SELECT id, name, code FROM categories';
     $result = mysqli_query($con, $sql);
 
@@ -29,14 +30,14 @@ if (!$con) {
 
     mysqli_query($con, 'CREATE FULLTEXT INDEX lot_search ON lots(name, descr)');
 
-    $search = trim($_GET['search'] ?? '');
-
-    if (!empty($search)) {
+    $cat_id = $_GET['cat'] ?? '';
+    $cat_name = $_GET['name'] ?? '';
+    if ($cat_id) {
 
         $cur_page = $_GET['page'] ?? 1;
         $page_items = 9;
-        $sql = 'SELECT COUNT(*) as cnt FROM lots where MATCH(name, descr) AGAINST(?)';
-        $stmt = db_get_prepare_stmt($con, $sql, [$search]);
+        $sql ='SELECT COUNT(*) as cnt FROM lots where cat_id=(?)';
+        $stmt = db_get_prepare_stmt($con, $sql, [$cat_id]);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
         $items_count = mysqli_fetch_assoc($result)['cnt'];
@@ -47,35 +48,33 @@ if (!$con) {
         $sql = 'select l.name name_l,l.id id_l, l.price, l.url, MAX(r.sum), c.name, count(r.id), dt_end from lots l '
             . 'join categories c on l.cat_id=c.id '
             . 'left join rates r on r.lot_id=l.id '
-            . 'where MATCH(l.name, descr) AGAINST(?) and dt_end > now() '
+            . 'where cat_id=(?) and dt_end > now() '
             . 'GROUP BY l.id '
-            . 'order by l.dt_cr desc LIMIT ' . $page_items . ' OFFSET ' . $offset;
+            . 'order by l.dt_cr desc LIMIT ' . $page_items . ' OFFSET ' . $offset ;
 
-        $stmt = db_get_prepare_stmt($con, $sql, [$search]);
+        $stmt = db_get_prepare_stmt($con, $sql, [$cat_id]);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
 
         $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        $page_content = include_template('search.php', [
-            'categories' => $categories,
-            'lots' => $lots,
-            'search' => $search,
-            'pages' => $pages,
-            'pages_count' => $pages_count,
-            'cur_page' => $cur_page
-        ]);
-    } else {
-        $page_content = include_template('error.php', ['error' => 'Вы не ввели поисковый запрос!',
-            'error_code' => 'Пустой поисковый запрос.',
-            'categories' => $categories]);
 
     }
+
+    $page_content = include_template('all-lots.php', [
+        'categories' => $categories,
+        'lots' => $lots,
+        'cat_id' => $cat_id,
+        'cat_name' => $cat_name,
+        'pages' => $pages,
+        'pages_count' => $pages_count,
+        'cur_page' => $cur_page
+    ]);
 }
 
 $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'categories' => $categories,
-    'title' => 'Главная страница',
+    'title' => 'Все лоты',
     'user' => $user
 ]);
 

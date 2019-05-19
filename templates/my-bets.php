@@ -2,7 +2,7 @@
     <ul class="nav__list container">
         <?php foreach ($categories as $cat): ?>
             <li class="nav__item">
-                <a href="pages/all-lots.html"><?= esc($cat['name']); ?></a>
+                <a href="all-lots.php?cat=<?= $cat['id']; ?>&name=<?= $cat['name']; ?>"><?= esc($cat['name']); ?></a>
             </li>
         <?php endforeach; ?>
     </ul>
@@ -38,7 +38,7 @@
                     <?= f_price($rate['sum']); ?>
                 </td>
                 <td class="rates__time">
-                    <?= $rate['dt_r']; ?>
+                    <?= show_date($rate['dt_r']); ?>
                 </td>
             </tr>
         <?php endforeach; ?>
