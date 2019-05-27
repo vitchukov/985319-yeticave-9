@@ -26,6 +26,13 @@ function is_date_valid(string $date): bool
     return $dateTimeObj !== false && array_sum(date_get_last_errors()) === 0;
 }
 
+/**
+ * Преобразует отрезок времени timestamp в строку
+ *
+ * @param $time точка времени
+ *
+ * @return Отрезок времени строкой
+ */
 function show_date($time) { // Определяем количество и тип единицы измерения
     $time = time() - strtotime($time);
     if ($time < 60) {
@@ -43,6 +50,15 @@ function show_date($time) { // Определяем количество и ти
     }
 }
 
+/**
+ * Вспомогательная функция для функции show_date
+ *
+ * @param $time числовое выражение оставшегося времени
+ * @param $type тип временного отрезка минучы, часы и т.д.
+ *
+ * @return Отрезок времени строкой
+ */
+
 function dimension($time, $type) { // Определяем склонение единицы измерения
     $dimension = array(
         'n' => array('месяцев', 'месяц', 'месяца', 'месяц'),
@@ -53,7 +69,7 @@ function dimension($time, $type) { // Определяем склонение е
     );
     if ($time >= 5 && $time <= 20)
         $n = 0;
-    else if ($time == 1 || $time % 10 == 1)
+    else if ($time === 1 || $time % 10 === 1)
         $n = 1;
     else if (($time <= 4 && $time >= 1) || ($time % 10 <= 4 && $time % 10 >= 1))
         $n = 2;
@@ -63,12 +79,28 @@ function dimension($time, $type) { // Определяем склонение е
 
 }
 
+/**
+ * Удаляет html и php теги из текста
+ *
+ * @param $str Текст строкой
+ *
+ * @return $texp Текст без тегов
+ */
+
 function esc($str)
 {
     $text = strip_tags($str);
 
     return $text;
 }
+
+/**
+ * Проверяет больше ли суток осталось до наступления точки времени
+ *
+ * @param $date Точка времени в будущем
+ *
+ * @return bool true Если осталось больше суток
+ */
 
 function is_date_not_end($date)
 {
@@ -78,6 +110,14 @@ function is_date_not_end($date)
         return true;
     }
 }
+
+/**
+ * Форматирует число в формат цены
+ *
+ * @param $price Цена числом
+ *
+ * @return $price Цена в фомате цены
+ */
 
 function f_price($price)
 {
@@ -90,7 +130,16 @@ function f_price($price)
     return $price;
 }
 
-//работа со временем
+/**
+ * Считает сколько осталось времени до даты в будущем
+ *
+ * @param $dtend Дата в будущем
+ * @param $s Вспомогательный аргумент чтобы получить результат в секундах
+ *
+ * @return $tend Время до наступления даты в формате Hms
+ * @return $secs_to_end Время до наступления даты в секундах
+ *
+ */
 
 function end_time($dtend, $s)
 {

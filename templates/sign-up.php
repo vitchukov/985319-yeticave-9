@@ -26,7 +26,7 @@
     </div>
     <div class="form__item <?= isset($errors['contacts']) ? "form__item--invalid" : "" ?>">
         <label for="message">Контактные данные <sup>*</sup></label>
-        <textarea id="message" name="contacts" placeholder="Напишите как с вами связаться"></textarea>
+        <textarea id="message" name="contacts" placeholder="Напишите как с вами связаться"><?php if (isset($form['contacts'])) { echo esc($form['contacts']);} ?></textarea>
         <span class="form__error"><?php if (isset($errors['contacts'])) { echo 'Напишите как с вами связаться';} ?></span>
     </div>
     <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>

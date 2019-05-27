@@ -31,7 +31,7 @@
     <div class="form__item form__item--wide <?= isset($errors['descr']) ? "form__item--invalid" : "" ?>">
         <label for="message">Описание <sup>*</sup></label>
         <textarea id="message" name="descr" placeholder="Напишите описание лота"
-                  value="<?php if (isset($lot['descr'])) echo $lot['descr'] ?>"></textarea>
+                  ><?php if (isset($lot['descr'])) echo $lot['descr'] ?></textarea>
         <span class="form__error"><?php if (isset($errors['descr'])) echo $errors['descr'] ?></span>
     </div>
     <div class="form__item form__item--file <?= isset($errors['url']) ? "form__item--invalid" : "" ?>">

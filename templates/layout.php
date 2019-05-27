@@ -27,7 +27,7 @@
                 <?php
                 if (isset($_SESSION['user'])): ?>
                     <div class="user-menu__logged">
-                        <p><?=$user['name']?></p>
+                        <p><?=esc($user_name)?></p>
                         <a class="user-menu__bets" href="../my-bets.php"> Мои ставки </a>
                         <a class="user-menu__logout" href="../logout.php"> Выход</a>
                     </div>
@@ -46,7 +46,7 @@
         </div>
     </header>
 
-    <main <?php if ($_SERVER['REQUEST_URI']=='/') { echo ' class="container"';} ?>>
+    <main <?php if ($_SERVER['REQUEST_URI']==='/') { echo ' class="container"';} ?>>
         <?= $content; ?>
     </main>
 </div>

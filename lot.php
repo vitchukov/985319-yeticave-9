@@ -1,26 +1,15 @@
 <?php
 require_once('helpers.php');
+require_once('init.php');
 
-session_start();
-
-$user = null;
 $count_rates = 0;
 
-if ($_SESSION) {
-    $user = $_SESSION['user'];
-}
 
-
-$con = mysqli_connect("localhost", "root", "", "yeticave");
-mysqli_set_charset($con, "utf8");
 $sql = 'SELECT id, name, code FROM categories';
 $result = mysqli_query($con, $sql);
 $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-if (!$con) {
-    $error = mysqli_connect_error();
-    $page_content = include_template('error.php', ['error' => $error, 'categories' => $categories]);
-} elseif (isset($_GET['id']) && $_GET['id']) {
+if (isset($_GET['id']) && $_GET['id']) {
     $id = (int)$_GET['id'];
 
     # ищем id пользователя сделавшего последнюю ставку
@@ -37,7 +26,7 @@ if (!$con) {
     $end_rates = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     # определяем количество ставок по лоту
-    $sql = 'SELECT count(*) as cnt FROM rates where lot_id=' . $id ;
+    $sql = 'SELECT count(*) as cnt FROM rates where lot_id=' . $id;
     $result = mysqli_query($con, $sql);
     $count_rates = mysqli_fetch_assoc($result)['cnt'];
 
@@ -57,62 +46,8 @@ if (!$con) {
         }
     }
 }
-//form
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $form = $_POST;
-    $required = ['rate'];
-    $errors = [];
 
-    if (!($end_user['user_id'] == $user['id'])) {
-        if (!is_int($form['rate']) && !($form['rate'] > 0)) {
-            $errors['rate'] = 'Введите вашу ставку';
-        }
-        if ($form['rate'] < ($lot['MAX(r.sum)'] + $lot['step'])) {
-            $errors['rate'] = 'Ставка должна быть больше предыдущей ставки на шаг торгов';
-        }
-        foreach ($required as $field) {
-            if (empty($_POST[$field])) {
-                $errors[$field] = 'Заполните это поле';
-            }
-        }
-        if (!empty($errors)) {
-            $page_content = include_template('lot.php', [
-                'categories' => $categories,
-                'errors' => $errors,
-                'lot' => $lot,
-                'form' => $form,
-                'tend' => end_time($lot['dt_end'], null),
-                'secs' => end_time($lot['dt_end'], 's'),
-                'end_user' => $end_user,
-                'end_rates' => $end_rates,
-                'count_rates' => $count_rates,
-                'user' => $user
-            ]);
-        } else {
-            $sql = 'INSERT INTO rates (dt_rate, sum, user_id, lot_id) VALUES (NOW(), ?, ?, ?)';
-            $stmt = db_get_prepare_stmt($con, $sql, [$form['rate'], $user['id'], $id]);
-            $res = mysqli_stmt_execute($stmt);
-            if ($res) {
-                header("Refresh: 0");
-                exit();
-            }
-        }
-    } else {
-        $errors['rate'] = 'Ваша ставка была последней. Вы не можете сделать ставку.';
-        $page_content = include_template('lot.php', [
-            'categories' => $categories,
-            'errors' => $errors,
-            'lot' => $lot,
-            'tend' => end_time($lot['dt_end'], null),
-            'secs' => end_time($lot['dt_end'], 's'),
-            'end_user' => $end_user,
-            'end_rates' => $end_rates,
-            'count_rates' => $count_rates,
-            'user' => $user
-        ]);
-
-    }
-} elseif ($lot) {
+if ($lot) {
     $page_content = include_template('lot.php', [
         'categories' => $categories,
         'lot' => $lot,
@@ -121,10 +56,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'end_rates' => $end_rates,
         'end_user' => $end_user,
         'count_rates' => $count_rates,
-        'user' => $user
+        'user_name' => $user_name,
+        'user_id' => $user_id
     ]);
+}
 
-
+//form
+if (($_SERVER['REQUEST_METHOD'] == 'POST') && !($end_user['user_id'] == $user_id)) {
+    $form = $_POST;
+    $required = ['rate'];
+    $errors = [];
+    if (!is_int($form['rate']) && !($form['rate'] > 0)) {
+        $errors['rate'] = 'Введите вашу ставку';
+    }
+    if ($form['rate'] < ($lot['price'] + $lot['step'])) {
+        $errors['rate'] = 'Ставка должна быть больше стартовой цены на шаг торгов';
+    }
+    if ($form['rate'] < ($lot['MAX(r.sum)'] + $lot['step'])) {
+        $errors['rate'] = 'Ставка должна быть больше предыдущей ставки на шаг торгов';
+    }
+    foreach ($required as $field) {
+        if (empty($_POST[$field])) {
+            $errors[$field] = 'Заполните это поле';
+        }
+    }
+    if (!empty($errors)) {
+        $page_content = include_template('lot.php', [
+            'categories' => $categories,
+            'errors' => $errors,
+            'lot' => $lot,
+            'form' => $form,
+            'tend' => end_time($lot['dt_end'], null),
+            'secs' => end_time($lot['dt_end'], 's'),
+            'end_user' => $end_user,
+            'end_rates' => $end_rates,
+            'count_rates' => $count_rates,
+            'user_name' => $user_name,
+            'user_id' => $user_id
+        ]);
+    } else {
+        $sql = 'INSERT INTO rates (dt_rate, sum, user_id, lot_id) VALUES (NOW(), ?, ?, ?)';
+        $stmt = db_get_prepare_stmt($con, $sql, [$form['rate'], $user_id, $id]);
+        $res = mysqli_stmt_execute($stmt);
+        if ($res) {
+            header("Refresh: 0");
+            exit();
+        }
+    }
 }
 //form
 
@@ -132,7 +110,7 @@ $layout_content = include_template('layout.php', [
     'content' => $page_content,
     'categories' => $categories,
     'title' => ' Страница лота',
-    'user' => $user
+    'user_name' => $user_name
 ]);
 
 print($layout_content);
