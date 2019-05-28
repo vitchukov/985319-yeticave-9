@@ -14,11 +14,11 @@ if (!$is_auth) {
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lot = $_POST;
     $required = ['name', 'descr', 'price', 'dt_end', 'step', 'category'];
     $errors = [];
-    if ($lot['category'] == 'Выберите категорию') {
+    if (!is_numeric($lot['category']) || ($lot['category']>6) ) {
         $errors['category'] = 'Выберите категорию';
     }
     if (!is_int($lot['price']) && !($lot['price'] > 0)) {

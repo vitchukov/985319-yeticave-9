@@ -99,7 +99,7 @@ function esc($str)
  *
  * @param $date Точка времени в будущем
  *
- * @return bool true Если осталось больше суток
+ * @return bool true Если осталось больше суток, если меньше то false
  */
 
 function is_date_not_end($date)
@@ -108,6 +108,8 @@ function is_date_not_end($date)
     $date_over_day = strtotime('today') + 86400;
     if ($date_in_sec > $date_over_day) {
         return true;
+    } else {
+        return false;
     }
 }
 

@@ -24,10 +24,9 @@
             <a class="main-header__add-lot button" href="../add.php">Добавить лот</a>
 
             <nav class="user-menu">
-                <?php
-                if (isset($_SESSION['user'])): ?>
+                <?php if (isset($_SESSION['user'])): ?>
                     <div class="user-menu__logged">
-                        <p><?=esc($user_name)?></p>
+                        <p><?= esc($user_name) ?></p>
                         <a class="user-menu__bets" href="../my-bets.php"> Мои ставки </a>
                         <a class="user-menu__logout" href="../logout.php"> Выход</a>
                     </div>
@@ -41,12 +40,14 @@
                             <a href="../login.php">Вход</a>
                         </li>
                     </ul>
-                <? endif; ?>
+                <?php endif; ?>
             </nav>
         </div>
     </header>
 
-    <main <?php if ($_SERVER['REQUEST_URI']==='/') { echo ' class="container"';} ?>>
+    <main <?php if ($_SERVER['REQUEST_URI'] === '/') {
+        echo ' class="container"';
+    } ?>>
         <?= $content; ?>
     </main>
 </div>
@@ -105,7 +106,7 @@
                 </svg>
             </a>
         </div>
-        <a class="main-footer__add-lot button" href="add-lot.html">Добавить лот</a>
+        <a class="main-footer__add-lot button" href="../add.php">Добавить лот</a>
         <div class="main-footer__developed-by">
             <span class="visually-hidden">Разработано:</span>
             <a class="logo-academy" href="https://htmlacademy.ru/intensive/php">

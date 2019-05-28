@@ -9,7 +9,7 @@ $page_content = include_template('sign-up.php', [
     'categories' => $categories,
 ]);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $form = $_POST;
     $required = ['email', 'password', 'name', 'contacts'];
     $errors = [];

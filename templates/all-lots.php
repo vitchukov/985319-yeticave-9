@@ -43,7 +43,7 @@
                     href="/all-lots.php?cat=<?= $cat_id; ?>&page=<?php if ($cur_page > 1) echo($cur_page - 1); else echo $cur_page; ?>&name=<?= $cat_name; ?>">Назад</a>
             </li>
             <?php foreach ($pages as $page): ?>
-                <li class="pagination-item <?php if ($page == $cur_page): ?>pagination-item-active<?php endif; ?>">
+                <li class="pagination-item <?php if ($page === $cur_page): ?>pagination-item-active<?php endif; ?>">
                     <a href="/all-lots.php?cat=<?= $cat_id; ?>&page=<?= $page; ?>&name=<?= $cat_name; ?>"><?= $page; ?></a>
                 </li>
             <?php endforeach; ?>
@@ -51,5 +51,5 @@
                     href="/all-lots.php?cat=<?= $cat_id; ?>&page=<?php if ($cur_page < $pages_count) echo($cur_page + 1); else echo $cur_page; ?>&name=<?= $cat_name; ?>">Вперед</a>
             </li>
         </ul>
-    <? endif; ?>
+    <?php endif; ?>
 </div>

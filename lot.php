@@ -9,7 +9,7 @@ $sql = 'SELECT id, name, code FROM categories';
 $result = mysqli_query($con, $sql);
 $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-if (isset($_GET['id']) && $_GET['id']) {
+if (isset($_GET['id']))  {
     $id = (int)$_GET['id'];
 
     # ищем id пользователя сделавшего последнюю ставку
@@ -62,7 +62,7 @@ if ($lot) {
 }
 
 //form
-if (($_SERVER['REQUEST_METHOD'] == 'POST') && !($end_user['user_id'] == $user_id)) {
+if (($_SERVER['REQUEST_METHOD'] === 'POST') && !($end_user['user_id'] === $user_id)) {
     $form = $_POST;
     $required = ['rate'];
     $errors = [];
