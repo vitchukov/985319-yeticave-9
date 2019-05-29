@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lot = $_POST;
     $required = ['name', 'descr', 'price', 'dt_end', 'step', 'category'];
     $errors = [];
-    if (!is_numeric($lot['category']) || ($lot['category']>6) ) {
+    if (!is_numeric($lot['category']) || ($lot['category'] > 6)) {
         $errors['category'] = 'Выберите категорию';
     }
     if (!is_int($lot['price']) && !($lot['price'] > 0)) {
@@ -27,11 +27,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!is_int($lot['step']) && !($lot['step'] > 0)) {
         $errors['step'] = 'Введите шаг ставки';
     }
-    if (!isset($lot['dt_end']) || !is_date_valid($lot['dt_end'])) {
-        $errors['dt_end'] = 'Введите дату завершения торгов ГГГГ-ММ-ДД';
-    }
-    if (!isset($lot['dt_end']) || !is_date_not_end($lot['dt_end'])) {
-        $errors['dt_end'] = 'Дата должна быть более текущей минимум на сутки';
+    if (isset($lot['dt_end'])) {
+        if (!is_date_valid($lot['dt_end'])) {
+            $errors['dt_end'] = 'Введите дату завершения торгов ГГГГ-ММ-ДД';
+        }
+        if (!is_date_not_end($lot['dt_end'])) {
+            $errors['dt_end'] = 'Дата должна быть более текущей минимум на сутки';
+        }
+    } else {
+        $errors['dt_end'] = 'Дата не введена';
     }
     foreach ($required as $field) {
         if (empty($_POST[$field])) {
