@@ -27,10 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!is_int($lot['step']) && !($lot['step'] > 0)) {
         $errors['step'] = 'Введите шаг ставки';
     }
-    if (!isset($lot['dt_end']) && !is_date_valid($lot['dt_end'])) {
+    if (!isset($lot['dt_end']) || !is_date_valid($lot['dt_end'])) {
         $errors['dt_end'] = 'Введите дату завершения торгов ГГГГ-ММ-ДД';
     }
-    if (!isset($lot['dt_end']) && !is_date_not_end($lot['dt_end'])) {
+    if (!isset($lot['dt_end']) || !is_date_not_end($lot['dt_end'])) {
         $errors['dt_end'] = 'Дата должна быть более текущей минимум на сутки';
     }
     foreach ($required as $field) {

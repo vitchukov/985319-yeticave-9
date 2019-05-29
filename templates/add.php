@@ -41,6 +41,7 @@
             <label for="lot-img">
                 Добавить
             </label>
+            <span class="form__error"><?php if (isset($errors['url'])) echo $errors['url'] ?></span>
         </div>
     </div>
     <div class="form__container-three <?= isset($errors['price']) ? "form__item--invalid" : "" ?>">

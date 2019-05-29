@@ -50,5 +50,5 @@
                     href="/search.php?search=<?= $search; ?>&page=<?php if ($cur_page < $pages_count) { echo($cur_page + 1);} else { echo $cur_page;} ?>">Вперед</a>
         </li>
     </ul>
-    <? endif; ?>
+    <?php endif; ?>
 </div>

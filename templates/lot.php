@@ -44,7 +44,7 @@
                         <button type="submit" class="button">Сделать ставку</button>
                     </form>
                 </div>
-            <? endif; ?>
+            <?php endif; ?>
             <div class="history">
                 <h3>История ставок (<span><?= $count_rates; ?></span>)</h3>
                 <table class="history__list">
