@@ -18,14 +18,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lot = $_POST;
     $required = ['name', 'descr', 'price', 'dt_end', 'step', 'category'];
     $errors = [];
-    if (!is_numeric($lot['category']) || ($lot['category'] > 6)) {
-        $errors['category'] = 'Выберите категорию';
+    if (isset($lot['category'])) {
+        if (!is_numeric($lot['category']) || ($lot['category'] > 6) || ($lot['category'] < 1)) {
+            $errors['category'] = 'Выберите категорию';
+        }
     }
-    if (!is_int($lot['price']) && !($lot['price'] > 0)) {
-        $errors['price'] = 'Введите начальную цену';
+    if (isset($lot['price'])) {
+        $lot['price'] = (int)$lot['price'];
+        if (!is_int($lot['price']) || !($lot['price'] > 0)) {
+            $errors['price'] = 'Начальная цена должна быть числом больше 0';
+        }
     }
-    if (!is_int($lot['step']) && !($lot['step'] > 0)) {
-        $errors['step'] = 'Введите шаг ставки';
+    if (isset($lot['step'])) {
+        $lot['step'] = (int)$lot['step'];
+        if (!is_int($lot['step']) || !($lot['step'] > 0)) {
+            $errors['step'] = 'Шаг ставки должен быть числом больше 0';
+        }
     }
     if (isset($lot['dt_end'])) {
         if (!is_date_valid($lot['dt_end'])) {
